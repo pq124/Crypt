@@ -175,23 +175,38 @@ func main() {
 
 	//五.五 从pem文件中读取私钥和公钥
 	fmt.Println("==============使用pem文件格式的秘钥进行加解密=========")
-	priKey, err := rsa.ReadPemPriKey("rsa_pri_huang.pem")
-	if err != nil {
-		fmt.Println("读取私钥文件出现错误:", err.Error())
+	prikey,err:= rsa.ReadPemPriKey("rsa_pri_huang.pem")
+	if err!=nil {
+		fmt.Println("读取私钥1文件出现错误",err.Error())
 		return
 	}
-	pubKey, err := rsa.ReadPemPubKey("rsa_pub_huang.pem")
-	if err != nil {
-		fmt.Println("读取公钥文件出现错误:", err.Error())
+	//priKey, err := rsa.ReadPemPriKey("rsa_pri_huang.pem")
+	//if err != nil {
+	//	fmt.Println("读取私钥文件出现错误:", err.Error())
+	//	return
+	//}
+
+	pubkey,err:=rsa.ReadPemPubKey("rsa_pub_huang.pem")
+	if err!=nil {
+		fmt.Println(err.Error())
 		return
 	}
+	//pubKey, err := rsa.ReadPemPubKey("rsa_pub_huang.pem")
+	//if err != nil {
+	//	fmt.Println("读取公钥文件出现错误:", err.Error())
+	//	return
+	//}
 
 	//用读取的公钥进行加密
 	data5_5 := "两个黄鹂鸣翠柳，一行白鹭上青天"
-	cipherText5_5, err := rsa.RSAEncrypt(*pubKey,[]byte(data5_5))
+	cipherText9,err:=rsa.RSAEncrypt(*pubkey,[]byte(data5_5))
 	//用读取到的私钥进行解密
-	originalText5_5, err := rsa.RSADecrypt(priKey,cipherText5_5)
-	fmt.Println("解密后的原文是:",string(originalText5_5))
+	originText9,err:=rsa.RSADecrypt(prikey,cipherText9)
+	fmt.Println("解密后的原文是",string(originText9))
+	//cipherText5_5, err := rsa.RSAEncrypt(*pubKey,[]byte(data5_5))
+	//
+	//originalText5_5, err := rsa.RSADecrypt(priKey,cipherText5_5)
+	//fmt.Println("解密后的原文是:",string(originalText5_5))
 
 	//六、椭圆曲线数字签名算法
 	fmt.Println("==================椭圆曲线数字签名算法===================")
@@ -206,15 +221,11 @@ func main() {
 
 	//③ 数字签名
 	r, s, err := ecc.ECDSASign(pri, []byte(data6))
-	fmt.Printf("%x\n", r)
-	fmt.Printf("%x\n", s)
-	fmt.Println(r)
-	fmt.Println(s)
 	//pem格式：密钥证书文件的格式
 	//der格式：
 
 	//④ 数字签名验证
-	data6 = "他开着比克，你提了林肯，我在拼多多砍单自行车成功，我们都有的未来"
+	//data6 = "他开着比克，你提了林肯，我在拼多多砍单自行车成功，我们都有的未来"
 	verifyResult := ecc.ECDSAVerify(pri.PublicKey, []byte(data6), r, s)
 	if verifyResult {
 		fmt.Println("ECDSA数字签名验证成功")

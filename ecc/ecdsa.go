@@ -1,10 +1,10 @@
 package ecc
 
 import (
-	"crypto/ecdsa"
-	"crypto/rand"
-	"crypto/elliptic"
 	"CryptCode/utils"
+	"crypto/ecdsa"
+	"crypto/elliptic"
+	"crypto/rand"
 	"math/big"
 )
 
@@ -15,11 +15,18 @@ import (
 func GenerateECDSAKey() (*ecdsa.PrivateKey, error) {
 	//1、实例化一个椭圆曲线方程实例
 	curve := elliptic.P256()
-	pri, err := ecdsa.GenerateKey(curve, rand.Reader)
-	if err != nil {
-		return nil, err
+	pri,err :=ecdsa.GenerateKey(curve , rand.Reader)
+	if err!=nil {
+	  return nil,err
 	}
-	return pri, nil
+	return pri,nil
+
+	//curve := elliptic.P256()
+	//pri, err := ecdsa.GenerateKey(curve, rand.Reader)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//return pri, nil
 }
 
 //--------------------私钥签名，公钥验签----------------------------------//
